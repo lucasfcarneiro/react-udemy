@@ -14,6 +14,7 @@ import ExecuteFunction from './components/ExecuteFunction';
 import ShowUserName from './components/ShowUserName';
 import Message from './components/Message';
 import ChangeMessageState from './components/ChangeMessageState';
+import UserDetails from './components/UserDetails';
 
 
 function App() {
@@ -24,7 +25,14 @@ function App() {
     {id: 1, brand: "Ferrari", color: "Amarela", newCar: false, km: 10000},
     {id: 2, brand: "Ford", color: "Azul", newCar: true, km: 0},
     {id: 3, brand: "Fiat", color: "Preto", newCar: false, km: 2343}
-  ]
+  ];
+
+  const peoples = [
+    {id: 1, name: "Joao", age:28, profession: "Engenheiro", cpf: 983728848},
+    {id: 2, name: "Pedro", age:15, profession: "Estudante", cpf: 24234323},
+    {id: 3, name: "Matheus", age:39, profession: "Advogado", cpf: 34534545},
+    {id: 4, name: "Osmar", age:10, profession: "Estudante", cpf: 654645645},
+  ];
 
   function ShowMessage() {
     console.log("Evento do componente pai")
@@ -76,6 +84,16 @@ function App() {
           {/* State Lift */}
       <Message msg={message}/>
       <ChangeMessageState handleMessage={handleMessage}/>
+
+      {/* Desafio secao 3 */}
+      {peoples.map((people)=> <UserDetails 
+      key={people.id}
+      name={people.name}
+      age={people.age}
+      profession={people.profession}
+      cpf={people.cpf}
+      />
+      )}
     </div>
   );
 };
