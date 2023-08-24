@@ -14,6 +14,7 @@ function App() {
       <h2>Showroom de carros</h2>
       
       <div className="car-container" >
+
        {cars.map((car)=> <Cars 
         key={car.id}
         brand = {car.brand}
@@ -23,10 +24,7 @@ function App() {
         />
        )}
        </div>
-
-
     </div>
   )
 }
-
 export default App

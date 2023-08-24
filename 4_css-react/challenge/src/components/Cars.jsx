@@ -14,5 +14,4 @@ const Cars = ({brand ,model ,year ,km}) => {
     </div>
   )
 }
-
 export default Cars
