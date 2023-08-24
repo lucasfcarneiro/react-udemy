@@ -1,0 +1,10 @@
+.carCard{
+    background-color: aquamarine;
+    padding: 50px 50px;
+    border-radius: 10px;
+    border: 2px solid black;
+    margin: 10px;
+}
+h2{
+    color: green;
+}

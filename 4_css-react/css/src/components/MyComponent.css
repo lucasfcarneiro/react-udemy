@@ -1,0 +1,9 @@
+p{
+    color :green;
+    background-color: lightgray;
+}
+
+.my-component-paragraph {
+    color: blue;
+    background-color: lightblue;
+}

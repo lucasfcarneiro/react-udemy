@@ -1,0 +1,15 @@
+body{
+  padding: 0%;
+  margin: 0;
+  text-align: center;
+  padding-bottom: 500px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.car-container{
+  display: flex;
+  justify-content: center;
+}
+
+.car-container div{
+  margin-top: 20px;
+}
