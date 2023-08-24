@@ -6,7 +6,7 @@ const Cars = ({brand ,model ,year ,km}) => {
   return (
     <div>
           <div className = {style.carCard}>
-          <h2>{brand}</h2>
+          <h2 className= {style.title}>{brand}</h2>
           <p>Modelo: {model} </p>
           <p>Ano: {year}</p>
           <p>Km: {km}</p>

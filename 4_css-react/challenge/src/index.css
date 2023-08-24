@@ -13,3 +13,7 @@ body{
 .car-container div{
   margin-top: 20px;
 }
+
+h2{
+  color: orange;
+}
