@@ -1,0 +1,10 @@
+.carCard{
+    background-color: rgb(184, 238, 219);
+    padding: 50px 50px;
+    border-radius: 10px;
+    border: 2px solid black;
+    margin: 10px;
+}
+.title{
+    color: green;
+}
