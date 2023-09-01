@@ -19,6 +19,16 @@
       "id": 4,
       "name": "Bermuda branca",
       "price": 89.9
+    },
+    {
+      "name": "teclado",
+      "price": "100",
+      "id": 5
+    },
+    {
+      "name": "teclado",
+      "price": "100",
+      "id": 6
     }
   ]
 }

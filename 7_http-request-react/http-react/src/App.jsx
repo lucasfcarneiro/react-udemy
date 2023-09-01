@@ -29,12 +29,19 @@ function App() {
       name, price
     };
     const response = await fetch(url, {
-      method: "POST", 
-      headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(product)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product)
     });
-    console.log(products)
-  };
+
+      //Dynamic Loading
+  const addedProduct = await response.json();
+
+  setProducts((prevProducts) => [...prevProducts, addedProduct]);
+  
+    setName("")
+    setPrice("")
+}; 
 
   return (
     <div >
