@@ -20,29 +20,21 @@
       "name": "Bermuda branca",
       "price": 89.9
     },
+    [],
+    [],
     {
-      "name": "teclado",
-      "price": "100",
-      "id": 5
-    },
-    {
-      "name": "teclado",
-      "price": "100",
-      "id": 6
-    },
-    {
-      "name": "mouse",
-      "price": "29",
+      "name": "lucas",
+      "price": "22",
       "id": 7
     },
     {
       "name": "teste",
-      "price": "29",
+      "price": "45",
       "id": 8
     },
     {
       "name": "teste",
-      "price": "23",
+      "price": "33",
       "id": 9
     }
   ]

@@ -7,27 +7,15 @@ import { useFetch } from './hooks/useFetch';
 const url = "http://localhost:3000/products"
 
 function App() {
-
-  const [products, setProducts] = useState([]);
+  const [myProducts, setMyProducts] = useState([]);
 
   //custom hook
-  const {data:items} = useFetch(url);
-
+  const { data: items, httpConfig } = useFetch(url);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
 
-  //Request data from API
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await fetch(url);
-
-  //     const data = await response.json();
-
-  //     setProducts(data);
-  //   }
-  //   fetchData()
-  // }, []);
-
+  //COMENTARIO 2
+  
   //Adding products
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -35,17 +23,11 @@ function App() {
     const product = {
       name, price
     };
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product)
-    });
 
-    //Dynamic Loading
-    const addedProduct = await response.json();
-
-    setProducts((prevProducts) => [...prevProducts, addedProduct]);
-
+    //  COMENTARIO 1
+    
+    //refectoring POST
+    httpConfig(product, "POST")
     setName("")
     setPrice("")
   };
@@ -81,4 +63,32 @@ function App() {
     </div>
   )
 }
+
 export default App
+
+
+//  COMENTARIO 1
+    //   const response = await fetch(url, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(product)
+    //   });
+
+    //   //Dynamic Loading
+    //   const addedProduct = await response.json();
+
+    //   setProducts((prevProducts) => [...prevProducts, addedProduct]);
+
+
+    //COMENTARIO 2
+  // //Request data from API
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await fetch(url);
+
+  //     const data = await response.json();
+
+  //     setProducts(data);
+  //   }
+  //   fetchData()
+  // }, []);
