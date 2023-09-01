@@ -29,6 +29,21 @@
       "name": "teclado",
       "price": "100",
       "id": 6
+    },
+    {
+      "name": "mouse",
+      "price": "29",
+      "id": 7
+    },
+    {
+      "name": "teste",
+      "price": "29",
+      "id": 8
+    },
+    {
+      "name": "teste",
+      "price": "23",
+      "id": 9
     }
   ]
 }
