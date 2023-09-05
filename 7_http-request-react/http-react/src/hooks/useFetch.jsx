@@ -3,7 +3,7 @@ import { useState } from "react";
 
 //Custom hook
 export const useFetch = (url) => {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(null)
 
     //post refactor
     const [config, setConfig] = useState(null)
@@ -12,6 +12,12 @@ export const useFetch = (url) => {
 
     // loading
     const [loading, setLoading] = useState(false)
+
+    //tratando erros try/catch
+    const [error, setError] = useState(null)
+
+    //desafio 6
+    const [itemId, setItemId] = useState(null)
 
     const httpConfig = (data, method) => {
         if (method === "POST") {
@@ -23,6 +29,15 @@ export const useFetch = (url) => {
                 body: JSON.stringify(data),
             })
             setMethod(method)
+        }else if(method === "DELETE"){
+            setConfig({
+                method,
+                headers: {
+                    "Content-type": "application/json",
+                }
+            })
+            setItemId(data)
+            setMethod(method)
         }
     }
 
@@ -31,10 +46,14 @@ export const useFetch = (url) => {
 
             setLoading(true)
 
-            const response = await fetch(url);
-            const json = await response.json()
+            try {
+                const response = await fetch(url);
+                const json = await response.json()
 
-            setData(json);
+                setData(json);
+            } catch (error) {
+                setError ("Houve um erro ao carregar os dados")
+            }
 
             setLoading(false)
         };
@@ -42,19 +61,27 @@ export const useFetch = (url) => {
     }, [url, callFetch]);
 
     //post refactor
-    useEffect( () => {
+    useEffect(() => {
         const httpRequest = async () => {
+
+            let json
+
             if (method === "POST") {
                 let fetchOptions = [url, config];
 
                 const response = await fetch(...fetchOptions)
-                const json = await response.json()
+                json = await response.json()
 
-                setCallFetch(json);
+            }else if(method === "DELETE"){
+                const deleteUrl = `${url}/${itemId}`
+                
+                const response = await fetch(deleteUrl,config)
+                json = await response.json()
             }
+            setCallFetch(json);
         }
         httpRequest()
     }, [config, method, url]);
 
-    return { data, httpConfig,loading };
+    return { data, httpConfig, loading, error};
 };

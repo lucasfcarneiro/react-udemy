@@ -16,9 +16,19 @@
       "price": 29.9
     },
     {
-      "id": 4,
-      "name": "Bermuda branca",
-      "price": 89.9
+      "name": "teste",
+      "price": "23",
+      "id": 5
+    },
+    {
+      "name": "camisa",
+      "price": "122",
+      "id": 6
+    },
+    {
+      "name": "teste",
+      "price": "12",
+      "id": 7
     }
   ]
 }
