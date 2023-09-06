@@ -1,14 +1,30 @@
-import { useState } from 'react'
 import './App.css'
 
+//1 config react router
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+//pages
+import Home from './pages/Home';
+import About from './pages/About';
+
+//components
+import NavBar from './components/NavBar';
+
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div>
-        <h1>
+      <h1>
+        React Router 
+      </h1> 
 
-        </h1>
+      <BrowserRouter>
+      <NavBar/>
+        <Routes>
+          <Route path="/" element = {<Home/>} />
+          <Route path="/about" element = {<About/>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
