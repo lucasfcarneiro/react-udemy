@@ -26,7 +26,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           {/* Rota dinamica */}
-          <Route path='/products/:id' element={<Product />} />
+          <Route path="/products/:id" element={<Product />} />
         </Routes>
       </BrowserRouter>
     </div>
