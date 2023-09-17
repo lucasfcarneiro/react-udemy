@@ -16,18 +16,18 @@
         "price": 29.9
       },
       {
-        "name": "teste",
-        "price": "23",
+        "name": "Chapeu",
+        "price": 23.90,
         "id": 5
       },
       {
-        "name": "camisa",
-        "price": "122",
+        "name": "Camisa Polo",
+        "price": 90.00,
         "id": 6
       },
       {
-        "name": "teste",
-        "price": "12",
+        "name": "Camisa social",
+        "price": 119.90,
         "id": 7
       }
     ]
