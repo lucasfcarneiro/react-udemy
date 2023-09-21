@@ -26,6 +26,7 @@ function App() {
       <BrowserRouter>
         {/* Links com react router */}
         <NavBar />
+        
         {/* search */}
         <SearchForm />
 
