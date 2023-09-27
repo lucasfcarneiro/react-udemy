@@ -9,7 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState();
     const [error, setError] = useState();
 
-    const { loading, error: loginError } = useAuthentication();
+    const {login, loading, error: authError } = useAuthentication();
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -21,10 +21,16 @@ const Login = () => {
           password
         }
     
-        const response = await createUser(user)
+        const response = await login(user)
     
         console.log(response)
       };
+
+      useEffect(() => {
+        if (authError){
+          setError(authError);
+        }
+      },[authError])
 
     return (
         <div className={styles.login}>

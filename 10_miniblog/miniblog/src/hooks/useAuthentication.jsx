@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react'
 
 export const useAuthentication = () => {
     const [error, setError] = useState(null)
-    const [loading, setloading] = useState(null)
+    const [loading, setLoading] = useState(null)
 
     //cleanup - deal with memory leak
     const [cancelled, setCancelled] = useState(false)
@@ -24,11 +24,12 @@ export const useAuthentication = () => {
             return;
         }
     }
-
+    
+    //create user
     const createUser = async (data) => {
         checkIfIsCancelled()
 
-        setloading(true)
+        setLoading(true)
         setError(null)
 
         try {
@@ -41,7 +42,7 @@ export const useAuthentication = () => {
             await updateProfile(user, {
                 displayName: data.displayName
             })
-            setloading(false)
+            setLoading(false)
 
             return user
 
@@ -59,22 +60,53 @@ export const useAuthentication = () => {
             } else {
                 systemErrorMessage = "Ocorreu um erro, por favor tente mais tarde."
             }
-            setloading(false)
+            setLoading(false)
             setError(systemErrorMessage)
         }
     };
 
     //logout - sign out
-    const logout = ()=>{
+    const logout = () => {
         checkIfIsCancelled();
         signOut(auth);
     }
+
+    // login - sign in
+    const login = async (data) => {
+
+        checkIfIsCancelled()
+
+        setLoading(true)
+        setError(false)
+
+        try {
+
+            await signInWithEmailAndPassword(auth, data.email, data.password)
+
+            setLoading(false)
+        } catch (error) {
+
+            console.log(error.message)
+            console.log(typeof error.message)
+
+            let systemErrorMessage;
+
+            if (error.message.includes("invalid-login-credentials")) {
+                systemErrorMessage = ("Usuário e/ou senha inválidos")
+            } else {
+                systemErrorMessage = ("Ocorreu um erro, tente mais tarde.")
+            }
+            setError(systemErrorMessage)
+            setLoading(false)
+        }
+    }
+
 
     useEffect(() => {
         return () => setCancelled(true)
     }, []);
 
     return {
-        auth, createUser, error, loading, logout
+        auth, createUser, error, loading, logout, login
     }
 }
