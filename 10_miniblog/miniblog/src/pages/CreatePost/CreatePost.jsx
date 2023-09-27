@@ -3,9 +3,11 @@ import styles from "./CreatePost.module.css"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuthValue } from "../../context/AuthContext"
+import { useInsertDocument } from "../../hooks/useInsertDocumento"
 
 const CreatePost = () => {
 
+  //usestates
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
   const [body, setBody] = useState("")
@@ -13,11 +15,42 @@ const CreatePost = () => {
   const [formError, setFormError] = useState("")
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
-  
+
+  const { insertDocument, response } = useInsertDocument("posts")
+  const { user } = useAuthValue()
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setFormError("")
 
+    //validar image url
+    try {
+      new URL(image);
+    } catch (error) {
+      setFormError("A imagem precisa ser uma URL.")
+    }
+    //criar o array de tags
+    const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase());
+
+    //checar todos os valores
+    if (!title || !image || !tags || !body) {
+      setFormError("Por favor, preencha todos os campos")
+    }
+
+    if (formError) return;
+
+    insertDocument({
+      title,
+      image,
+      body,
+      tagsArray,
+      uid: user.uid,
+      createdBy: user.displayName
+    })
+
+    //redirect to home page
+    navigate("/")
   }
 
   return (
@@ -61,9 +94,10 @@ const CreatePost = () => {
             value={tags} />
         </label>
 
-        {!loading && <button className="button">Postar</button>}
-        {loading && <button className="button" disabled>Aguarde...</button>}
-        {error && <p className="error">{error}</p>}
+        {!response.loading && <button className="button">Postar</button>}
+        {response.loading && <button className="button" disabled>Aguarde...</button>}
+        {response.error && <p className="error">{response.error}</p>}
+        {formError && <p className="error">{formError}</p>}
       </form>
     </div>
   )
