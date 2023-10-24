@@ -3,7 +3,7 @@ import styles from "./CreatePost.module.css"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuthValue } from "../../context/AuthContext"
-import { useInsertDocument } from "../../hooks/useInsertDocumento"
+import { useInsertDocument } from "../../hooks/useInsertDocument"
 
 const CreatePost = () => {
 
