@@ -40,7 +40,7 @@ const Dashboard = () => {
             <p>{post.title}</p>
             <div>
               <Link to={`/posts/${post.id}`} className="button button-outline">Ver</Link>
-              <Link to={`/posts/edit${post.id}`} className="button button-outline">Editar</Link>
+              <Link to={`/posts/edit/${post.id}`} className="button button-outline">Editar</Link>
               <button onClick={() => deleteDocument(post.id)} className="button button-outline button-danger">Excluir</button>
             </div>
           </div>)}
