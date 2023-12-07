@@ -1,0 +1,24 @@
+.posted_container{
+    text-align: center;
+}
+
+.posted_container h3{
+    margin-bottom: .2em;
+}
+
+.posted_container img{
+    max-width: 600px
+}
+
+.posted_container .tags{
+    display: flex;
+    justify-content: center;
+}
+
+.tags p{
+    margin-right: 1em;
+}
+
+.tags span{
+    font-weight: bold;
+}
