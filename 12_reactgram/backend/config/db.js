@@ -1,19 +1,27 @@
-const mongoose = require("mongoose");
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PASSWORD;
+const DB_USER = process.env.DB_USER
+const DB_PASS = process.env.DB_PASS
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.2dz6peu.mongodb.net/?retryWrites=true&w=majority`;
 
-const conn = async () => {
-    try {
-        const dbconn = await mongoose.connect(
-            `mongodb+srv://${dbUser}:${dbPassword}@cluster0.2dz6peu.mongodb.net/?retryWrites=true&w=majority`,
-            //ssl = false
-        );
-        console.log("conectou ao BD");
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
-        return dbconn;
-    } catch (error) {
-        console.log(error) 
-    }
-};
-
-conn();
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
