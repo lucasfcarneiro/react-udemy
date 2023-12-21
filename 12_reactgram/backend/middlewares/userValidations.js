@@ -42,5 +42,5 @@ const loginValidation = () => {
 }
 
 module.exports = {
-    userCreateValidation,loginValidation
+    userCreateValidation,loginValidation,
 }

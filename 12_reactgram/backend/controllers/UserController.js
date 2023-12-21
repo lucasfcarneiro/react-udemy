@@ -13,37 +13,37 @@ const generateToken = (id) => {
 //Register user and sign in 
 const register = async (req, res) => {
 
-    try {
-        const { name, email, password } = req.body
 
-        //check if user exists
-        const user = await User.findOne({ email })
+    const { name, email, password } = req.body
 
-        if (user) {
-            return res.status(422).json({ errors: ["Email ja cadastrado"] })
-        }
+    //check if user exists
+    const user = await User.findOne({ email })
 
-        //Generate password hash
-        const salt = await bcrypt.genSalt()
-        const passwordHash = await bcrypt.hash(password, salt)
-
-        //Create user
-        const newUser = await User.create({
-            name,
-            email,
-            password: passwordHash
-        })
-        //if user was created successfully, return the token
-        return res.status(201).json({
-            _id: newUser._id,
-            token: generateToken(newUser._id)
-        })
+    if (user) {
+        res.status(422).json({ errors: ["Email ja cadastrado"] })
+        return
     }
-    catch (error) {
-        if (newUser) {
-            return res.status(422).json({ errors: ["Houve um error, por favor tente mais tarde"] })
-        }
+
+    //Generate password hash
+    const salt = await bcrypt.genSalt()
+    const passwordHash = await bcrypt.hash(password, salt)
+
+    //Create user
+    const newUser = await User.create({
+        name,
+        email,
+        password: passwordHash
+    })
+    //if user was created successfully, return the token
+    if (!newUser) {
+        res.status(422).json({ errors: ["Houve um error, por favor tente mais tarde"] })
+        return
     }
+
+    res.status(201).json({
+        _id: newUser._id,
+        token: generateToken(newUser._id)
+    })
 }
 
 //sign user in
@@ -54,7 +54,7 @@ const login = async (req, res) => {
 
     //check if user exist
     if (!user) {
-        res.status(404).json({ errors: "Usuario nao encontrado" })
+        res.status(422).json({ errors: "Usuario nao encontrado" })
         return
     }
 
@@ -64,14 +64,21 @@ const login = async (req, res) => {
         return
     }
 
-    //return user with token
-    return res.status(201).json({
+    //Return user with token
+    res.status(201).json({
         _id: user._id,
         profileImage: user.profileImage,
-        token: generateToken(user._id)
-    })
+        token: generateToken(user._id),
+    });
+}
+
+//get current logged in user
+const getCurrentUser = async (req,res) => {
+    const user = req.user;
+
+    res.status(200).json(user)
 }
 
 module.exports = {
-    register, login
+    register, login, getCurrentUser,
 }
