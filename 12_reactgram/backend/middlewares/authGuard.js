@@ -15,11 +15,10 @@ const authGuard = async (req, res, next) => {
         const verified = jwt.verify(token, jwtSecret)
 
         req.user = await User.findById(verified.id).select("-password")
-
         next()
         
     } catch (error) {
-        res.status(401).json({errors: ["Token invalido"]})
+        res.status(401).json({errors: ["Token Invalido."]})
     }
 }
 

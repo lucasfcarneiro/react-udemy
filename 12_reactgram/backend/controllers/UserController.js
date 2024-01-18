@@ -12,39 +12,44 @@ const generateToken = (id) => {
 
 //Register user and sign in 
 const register = async (req, res) => {
+    const { name, email, password } = req.body;
 
+    try {
+        // Check if user exists
+        const user = await User.findOne({ email });
 
-    const { name, email, password } = req.body
+        if (user) {
+            return res.status(422).json({ errors: ["Email já cadastrado"] });
+        }
 
-    //check if user exists
-    const user = await User.findOne({ email })
+        // Generate password hash
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
 
-    if (user) {
-        res.status(422).json({ errors: ["Email ja cadastrado"] })
-        return
+        // Create user
+        const newUser = await User.create({
+            name,
+            email,
+            password: passwordHash,
+        });
+
+        // If user was created successfully, return the token
+        if (!newUser) {
+            return res
+                .status(422)
+                .json({ errors: ["Houve um erro, por favor tente mais tarde"] });
+        }
+
+        return res.status(201).json({
+            _id: newUser._id,
+            token: generateToken(newUser._id),
+        });
+    } catch (error) {
+        console.error("Registration error:", error);
+        return res.status(500).json({ errors: ["Erro no servidor"] });
     }
+};
 
-    //Generate password hash
-    const salt = await bcrypt.genSalt()
-    const passwordHash = await bcrypt.hash(password, salt)
-
-    //Create user
-    const newUser = await User.create({
-        name,
-        email,
-        password: passwordHash
-    })
-    //if user was created successfully, return the token
-    if (!newUser) {
-        res.status(422).json({ errors: ["Houve um error, por favor tente mais tarde"] })
-        return
-    }
-
-    res.status(201).json({
-        _id: newUser._id,
-        token: generateToken(newUser._id)
-    })
-}
 
 //sign user in
 const login = async (req, res) => {
@@ -69,7 +74,7 @@ const login = async (req, res) => {
         _id: user._id,
         profileImage: user.profileImage,
         token: generateToken(user._id),
-    });
+    }); 
 }
 
 //get current logged in user
@@ -79,6 +84,11 @@ const getCurrentUser = async (req,res) => {
     res.status(200).json(user)
 }
 
+//Update an user
+const update = async (req,res) =>{
+    res.send("UPDATE")
+}
+
 module.exports = {
-    register, login, getCurrentUser,
+    register, login, getCurrentUser, update
 }
