@@ -1,7 +1,9 @@
-const DB_USER = process.env.DB_USER
-const DB_PASS = process.env.DB_PASS
+
+const { DB_HOST, DB_PASSWORD, DB_USER } = process.env;
+const mongoose = require('mongoose');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.2dz6peu.mongodb.net/?retryWrites=true&w=majority`;
+
+const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -13,15 +15,16 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
+  
+  const { DB_HOST, DB_NAME, DB_PASSWORD, DB_USER } = process.env;
+
+  mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`)
+  .then(() => {
+      console.log('DB Connected!')
+  }).catch((error) => {
+      console.log(error);
+  })
+
 }
 run().catch(console.dir);
+

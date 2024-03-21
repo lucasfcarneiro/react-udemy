@@ -11,7 +11,7 @@ const authGuard = require("../middlewares/authGuard")
 const { imageUpload } = require("../middlewares/imageUpload")
 
 //Routes
-router.post("/register", userCreateValidation(), loginValidation, validate, register)
+router.post("/register", userCreateValidation(), loginValidation(), validate, register)
 router.post("/login", loginValidation(), validate, login)
 router.get("/profile", authGuard, getCurrentUser)
 router.put("/",
