@@ -6,7 +6,9 @@ const { register, login, getCurrentUser, update } = require("../controllers/User
 
 //middlewares
 const validate = require("../middlewares/handleValidation")
-const { userCreateValidation, loginValidation, userUpdateValidation } = require("../middlewares/userValidations")
+const { userCreateValidation,
+    loginValidation,
+    userUpdateValidation } = require("../middlewares/userValidations")
 const authGuard = require("../middlewares/authGuard")
 const { imageUpload } = require("../middlewares/imageUpload")
 
@@ -18,6 +20,7 @@ router.put("/",
     authGuard,
     userUpdateValidation(),
     validate,
-    imageUpload.single("profileImage"), update)
+    imageUpload.single("profileImage"),
+    update)
 
 module.exports = router

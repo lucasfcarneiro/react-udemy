@@ -1,5 +1,5 @@
 
-const { DB_HOST, DB_PASSWORD, DB_USER } = process.env;
+const { DB_HOST, DB_NAME, DB_PASSWORD, DB_USER } = process.env;
 const mongoose = require('mongoose');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
