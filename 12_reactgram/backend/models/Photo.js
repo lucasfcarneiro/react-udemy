@@ -1,6 +1,5 @@
-const { Schema } = require("mongoose");
-const mongoose = require("require");
-const { schema } = mongoose;
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const photoSchema = new Schema(
     {
@@ -8,10 +7,14 @@ const photoSchema = new Schema(
         title: String,
         likes: Array,
         comments: Array,
-        userId: mongoose.ObjectId,
+        userId: { type: Schema.Types.ObjectId, ref: "User" },
         userName: String,
     },
     {
-        timestamps:true,
+        timestamps: true,
     }
 );
+
+const Photo = mongoose.model("Photo", photoSchema);
+
+module.exports = Photo;
