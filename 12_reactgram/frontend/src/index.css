@@ -61,7 +61,7 @@ input::placeholder{
   font-weight: bold;
   cursor: pointer;
   opacity: .8;
-  font-size: .1em;
+  /*font-size: .1em;*/
 }
 
 input[type="submit"]{

@@ -13,8 +13,8 @@ e.preventDefault()
 }
 
   return (
-    <div>
-      <h2>Register</h2>
+    <div id="register">
+      <h2>Registrar</h2>
       <p className="subtitle">Cadastre-se para ver as fotos dos seus amigos</p>
       <form onSubmit={handleSubmit}>
       <input type="text" placeholder="Nome"/>
