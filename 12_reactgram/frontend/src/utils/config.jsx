@@ -1,29 +1,32 @@
 export const api = 'http://localhost:5001/api'
 export const uploads = 'http://localhost:5001/uploads'
 
-export const requestConfig = (method, data, token = null, image = null)=>{
+export const requestConfig = (method, data, token = null, image = null) => {
 
     let config
 
-    if(image){
+    if (image) {
         config = {
-            method, 
-            body: data,
-            headers: {}
-        }
-    }else if(method === "DELETE" || data === null){
-        config = { method, headers:{}}
-    }else{
-        config= {
             method,
-            body:JSON.stringify(data),
+            body: data,
+            headers: {},
+        };
+    } else if (method === "DELETE" || data === null) {
+        config = {
+            method,
+            headers: {},
+        };
+    } else {
+        config = {
+            method,
+            body: JSON.stringify(data),
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             }
-        }
+        };
     }
 
-    if (token){
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
 

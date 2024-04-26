@@ -13,7 +13,19 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 //solve cors
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET","POST"]
+}
+))
 app.use(cors({credentials: true, origin: "http://localhost:5001"}))
+
+//
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    next();
+});
+
 
 //upload directory 
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")))

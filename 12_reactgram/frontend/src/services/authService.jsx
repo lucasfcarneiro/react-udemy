@@ -1,24 +1,26 @@
-import {api, requestConfig} from '../utils/config'
+import { api, requestConfig } from '../utils/config';
 
-//Register an user
-const register = async(data)=>{
-
+const register = async (data) => {
     const config = requestConfig("POST", data);
 
     try {
-        const res = await fetch(api + "/users/register", config)
-        .then((res) =>res.json())
-        .catch((err) => err);
+        const response = await fetch(api + "/users/register", config);
 
-        if(res){
-            localStorage.setItem("user", JSON.stringify(res))
+        if (!response.ok) {
+            throw new Error(`Erro ao registrar usuário: ${response.status}`);
         }
+
+        const user = await response.json();
+        localStorage.setItem("user", JSON.stringify(user));
+        return user;
     } catch (error) {
-        console.log(error)
+        console.error("Erro durante o registro:", error);
+        throw error; // Rejeitar o erro para que seja tratado no chamador da função
     }
-}
+};
 
 const authService = {
     register,
-}
+};
+
 export default authService;
