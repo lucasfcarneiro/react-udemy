@@ -1,18 +1,19 @@
 import { api, requestConfig } from '../utils/config';
 
+//Register an user
 const register = async (data) => {
     const config = requestConfig("POST", data);
 
     try {
-        const response = await fetch(api + "/users/register", config);
+        const response = await fetch(api + "/users/register", config)
+            .then((response) => response.json())
+            .catch((err) => err)
 
-        if (!response.ok) {
-            throw new Error(`Erro ao registrar usuário: ${response.status}`);
+        if (response) {
+            localStorage.setItem("user", JSON.stringify(response));
         }
+        return response;
 
-        const user = await response.json();
-        localStorage.setItem("user", JSON.stringify(user));
-        return user;
     } catch (error) {
         console.error("Erro durante o registro:", error);
         throw error; // Rejeitar o erro para que seja tratado no chamador da função
