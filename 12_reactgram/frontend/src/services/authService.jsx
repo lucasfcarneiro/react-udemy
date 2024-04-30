@@ -15,13 +15,18 @@ const register = async (data) => {
         return response;
 
     } catch (error) {
-        console.error("Erro durante o registro:", error);
-        throw error; // Rejeitar o erro para que seja tratado no chamador da função
+        console.log(error)
     }
+};
+
+//Logout an user by removing the token 
+const logout = () => {
+    localStorage.removeItem("user")
 };
 
 const authService = {
     register,
+    logout,
 };
 
 export default authService;
