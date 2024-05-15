@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended: false}));
 //solve cors
 app.use(cors({
     origin: "http://localhost:5173",
-    methods: ["GET","POST"]
+    methods: ["GET","POST", "PUT"]
 }
 ))
 app.use(cors({credentials: true, origin: "http://localhost:5001"}))
