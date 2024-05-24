@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom"
 //redux
 import { getUserDetails } from "../../slices/userSlice"
 import userService from "../../services/userService"
+import { publishPhoto, resetMessage, getUserPhotos } from "../../slices/photoSlice"
 
 
 const Profile = () => {
@@ -23,8 +24,16 @@ const Profile = () => {
 
     const dispatch = useDispatch()
 
-    const { user, loading } = useSelector((state) => state.user)
     const { user: userAuth } = useSelector((state) => state.auth)
+    const { user, loading: loadingUser } = useSelector((state) => state.user)
+    const { photos,
+        loading: loadingPhoto,
+        message: messagePhoto,
+        error: errorPhoto
+    } = useSelector((state) => state.photo)
+
+    const [title, setTitle] = useState("")
+    const [image, setImage] = useState("")
 
     //New form and edit form refs
     const newPhotoForm = useRef()
@@ -33,15 +42,43 @@ const Profile = () => {
 
     //Load user data
     useEffect(() => {
-        dispatch(getUserDetails(id))
+        dispatch(getUserDetails(id));
+        dispatch(getUserPhotos(id));
     }, [dispatch, id])
+
+    const handleFile = (e) => {
+        const image = e.target.files[0]
+
+        setImage(image)
+    }
 
     const submitHandle = (e) => {
         e.preventDefault()
-        //service -> slice -> component (profile.jsx)
-    }
+        //service -> slice (colocar o slice no store.jsx) -> component (ex: profile.jsx) 
 
-    if (loading) {
+        const photoData = {
+            title,
+            image
+        }
+
+        //build form data
+        const formData = new FormData()
+
+        const photoFormData = Object.keys(photoData).forEach((key) =>
+            formData.append(key, photoData[key]))
+
+        formData.append("photo", photoFormData)
+
+        dispatch(publishPhoto(formData))
+
+        setTitle("")
+
+        setTimeout(() => {
+            dispatch(resetMessage());
+        }, 2000);
+    };
+
+    if (loadingUser) {
         return <p>Carregando...</p>
     }
 
@@ -63,18 +100,51 @@ const Profile = () => {
                         <form onSubmit={submitHandle}>
                             <label>
                                 <span>Titulo para a foto:</span>
-                                <input type="text" placeholder="Insira um titulo" />
+                                <input type="text" placeholder="Insira um titulo" on onChange={(e) => setTitle(e.target.value)} value={title || ""} />
                             </label>
                             <label>
                                 <span>Imagem:</span>
-                                <input type="file" />
+                                <input type="file" onChange={handleFile} />
                             </label>
+                            {!loadingPhoto && <input type="submit" value="Postar" />}
+                            {loadingPhoto && <input type="submit" disabled value="Aguarde..." />}
 
-                            <input type="submit" value="Postar" />
                         </form>
                     </div>
+                    {errorPhoto && <Message msg={errorPhoto} type="error" />}
+                    {messagePhoto && <Message msg={messagePhoto} type="success" />}
                 </>
             )}
+            <div className="user-photos">
+                <h2>Fotos publicadas:</h2>
+                <div className="photos-container">
+                    {photos && photos.length > 0 ? (
+                        photos.map((photo) => (
+                            <div className="photo" key={photo._id}>
+                                {photo.image && (
+                                    <img
+                                        src={`${uploads}/photos/${photo.image}`}
+                                        alt={photo.title}
+                                    />
+                                )}
+                                {id === userAuth._id ? (
+                                    <div className="actions">
+                                        <Link to={`/photos/${photo._id}`}>
+                                            <BsFillEyeFill/>
+                                        </Link>
+                                        <BsFillPenFill />
+                                        <BsXLg/>
+                                    </div>
+                                ) : (
+                                    <Link className="btn" to={`/photos/${photo._id}`}>Ver</Link>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <p>Ainda não há fotos publicadas</p>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
