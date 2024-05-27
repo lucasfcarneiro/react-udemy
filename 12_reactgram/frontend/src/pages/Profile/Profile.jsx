@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom"
 //redux
 import { getUserDetails } from "../../slices/userSlice"
 import userService from "../../services/userService"
-import { publishPhoto, resetMessage, getUserPhotos } from "../../slices/photoSlice"
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto } from "../../slices/photoSlice"
 
 
 const Profile = () => {
@@ -52,6 +52,12 @@ const Profile = () => {
         setImage(image)
     }
 
+    const resetComponentMessage = () => {
+        setTimeout(() => {
+            dispatch(resetMessage());
+        }, 2000);
+    }
+
     const submitHandle = (e) => {
         e.preventDefault()
         //service -> slice (colocar o slice no store.jsx) -> component (ex: profile.jsx) 
@@ -73,10 +79,16 @@ const Profile = () => {
 
         setTitle("")
 
-        setTimeout(() => {
-            dispatch(resetMessage());
-        }, 2000);
+        resetComponentMessage()
     };
+
+    //Delete a photo
+    const handleDelete = (id) => {
+
+        dispatch(deletePhoto(id))
+
+        resetComponentMessage()
+    }
 
     if (loadingUser) {
         return <p>Carregando...</p>
@@ -133,7 +145,7 @@ const Profile = () => {
                                             <BsFillEyeFill/>
                                         </Link>
                                         <BsFillPenFill />
-                                        <BsXLg/>
+                                        <BsXLg onClick={() => handleDelete(photo._id)}/>
                                     </div>
                                 ) : (
                                     <Link className="btn" to={`/photos/${photo._id}`}>Ver</Link>
