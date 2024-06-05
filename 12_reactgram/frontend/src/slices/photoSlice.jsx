@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import photoService from "../services/photoService"
 
 const initialState = {
@@ -17,9 +17,9 @@ export const publishPhoto = createAsyncThunk(
         const token = thunkAPI.getState().auth.user.token //pega o token do user
 
         const data = await photoService.publishPhoto(photo, token)
-        
+
         //check for erros
-        if(data.errors){
+        if (data.errors) {
             return thunkAPI.rejectWithValue(data.errors[0])
         }
         return data
@@ -29,7 +29,7 @@ export const publishPhoto = createAsyncThunk(
 //Get user photos
 export const getUserPhotos = createAsyncThunk(
     "photo/userphotos",
-    async (id, thunkAPI) =>{
+    async (id, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token
         const data = await photoService.getUserPhotos(id, token)
 
@@ -39,13 +39,30 @@ export const getUserPhotos = createAsyncThunk(
 
 //Delete photo
 export const deletePhoto = createAsyncThunk(
-    "photo/delete", 
+    "photo/delete",
     async (id, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token
         const data = await photoService.deletePhoto(id, token)
 
         //check for erros
-        if(data.errors){
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+        return data
+    }
+)
+
+//Update photo
+export const updatePhoto = createAsyncThunk(
+    "photo/update",
+    async (photoData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+        const data = await photoService.updatePhoto(
+            { title: photoData.title },
+            photoData.id,
+            token)
+        //check for erros
+        if (data.errors) {
             return thunkAPI.rejectWithValue(data.errors[0])
         }
         return data
@@ -108,8 +125,31 @@ export const photoSlice = createSlice({
                 state.error = action.payload
                 state.photo = {}
             })
-        }
+            .addCase(updatePhoto.pending, (state) => {
+                state.loading = true
+                state.error = false
+            })
+            .addCase(updatePhoto.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+                
+                state.photos.map((photo) => {
+                    if(photo._id === action.payload.photo._id) {
+                        return (photo.title = action.payload.photo.title)
+                    }
+                    return photo;
+                })
+
+                state.message = action.payload.message
+            })
+            .addCase(updatePhoto.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
+                state.photo = {}
+            })
+    }
 });
 
-export const {resetMessage} = photoSlice.actions;
+export const { resetMessage } = photoSlice.actions;
 export default photoSlice.reducer;

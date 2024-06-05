@@ -47,6 +47,10 @@
     cursor: pointer;
 }
 
+.edit-photo{
+    margin-bottom: 1em;
+}
+
 .edit-photo img{
      width: 100%;
      margin-bottom: 1em;
