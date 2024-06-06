@@ -16,6 +16,8 @@ import Register from './pages/Auth/Register'
 import Home from './pages/Home/Home'
 import EditProfile from './pages/EditProfile/EditProfile'
 import Profile from './pages/Profile/Profile'
+import Photo from './pages/Photo/Photo'
+
 
 function App() {
 
@@ -47,6 +49,10 @@ function App() {
             <Route
               path='/register'
               element={!auth ? <Register /> : <Navigate to="/" />} />
+            <Route
+              path='/photos/:id'
+              element={auth ? <Photo /> : <Login to="/login" />} />
+
           </Routes></div>
         <Footer />
       </BrowserRouter>
