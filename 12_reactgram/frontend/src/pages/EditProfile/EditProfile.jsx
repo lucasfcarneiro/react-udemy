@@ -41,34 +41,34 @@ const EditProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        //Gather user data from states
+    
+        // Gather user data from states
         const userData = {
             name
         };
         if (profileImage) {
-            userData.profileImage = profileImage
+            userData.profileImage = profileImage;
         }
         if (bio) {
-            userData.bio = bio
+            userData.bio = bio;
         }
         if (password) {
-            userData.password = password
+            userData.password = password;
         }
-
+    
         // Build form data
-        const formData = new FormData()
-
-        const userFormData = Object.keys(userData).forEach((key) => formData.append(key, userData[key]))
-
-        formData.append("user", userFormData)
-
-        await dispatch(updateProfile(userFormData))
-
+        const formData = new FormData();
+    
+        Object.keys(userData).forEach((key) => formData.append(key, userData[key]));
+    
+        console.log(formData)
+        dispatch(updateProfile(formData));
+    
         setTimeout(() => {
             dispatch(resetMessage());
-        }, 2000)
-    }
+        }, 2000);
+    };
+    
 
     const handleFile = (e) => {
         //image preview
